@@ -617,6 +617,7 @@ contract BTR is ERC20, Ownable {
 
     /// @notice Update distributor
     function updateDistributor(address _distributor) external onlyOwner {
+        require(_isContract(_distributor), "Address is not a contract");
         address oldDistributor = distributor;
         distributor = _distributor;
         emit DistributorUpdated(oldDistributor, _distributor);
@@ -716,5 +717,13 @@ contract BTR is ERC20, Ownable {
     function withdrawStuckEth(address toAddr) external onlyOwner {
         (bool success, ) = toAddr.call{value: address(this).balance}("");
         require(success);
+    }
+    
+    function _isContract(address _addr) internal view returns (bool) {
+        uint32 size;
+        assembly {
+            size := extcodesize(_addr)
+        }
+        return (size > 0);
     }
 }

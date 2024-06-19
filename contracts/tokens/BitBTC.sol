@@ -230,12 +230,14 @@ contract rBTC is OFT{
 
     /// @notice  Add approved manager
     function addApprovedManager(address _manager) external onlyOwner {
+        require(_manager != address(0), "Invalid address: zero address");
         approvedManager[_manager] = true;
         emit ApprovedManagerAdded(_manager);
     }
 
     /// @notice  Remove approved manage
     function removeApprovedManager(address _manager) external onlyOwner {
+        require(_manager != address(0), "Invalid address: zero address");
         approvedManager[_manager] = false;
         emit ApprovedManagerRemoved(_manager);
     }
@@ -267,6 +269,7 @@ contract rBTC is OFT{
     }
 
     function setRedemFeeTo(address _feeTo) external onlyOwner(){
+        require(_feeTo != address(0), "Invalid address: zero address");
         redeemFeeTo = _feeTo;
     }
     /// MANAGER FUNCTIONS ///

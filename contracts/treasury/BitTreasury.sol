@@ -83,7 +83,8 @@ contract BitTreasury is Ownable {
 
     /// @notice  Set redemptions to active
     function setRedemtionActive(uint256 _percentRedeemable) external onlyOwner {
-        require(_percentRedeemable < 100, "Invalid percentage");
+        require(_percentRedeemable > 60 && _percentRedeemable < 100 , "Invalid percentage");
+        redeemtionActive = true;
         redeemtionActive = true;
         percentRedeemable = _percentRedeemable;
         emit SetRedemtionActive();
@@ -129,6 +130,7 @@ contract BitTreasury is Ownable {
     /// @notice       Update rBTC if for whatever reason need to update
     /// @param _rBTC  Address of new rBTC
     function updaterBTC(address _rBTC) external onlyOwner() {
+        require(_isContract(_rBTC), "Address is not a contract");
         address _oldrBTC = rBTC;
         rBTC = _rBTC;
         emit rBTCUpdated(_oldrBTC, _rBTC);
@@ -185,5 +187,13 @@ contract BitTreasury is Ownable {
                 (toSend * percentRedeemable) / 100
             );
         }
+    }
+
+    function _isContract(address _addr) internal view returns (bool) {
+        uint32 size;
+        assembly {
+            size := extcodesize(_addr)
+        }
+        return (size > 0);
     }
 }

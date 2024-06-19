@@ -130,7 +130,16 @@ contract BTRStaking is Ownable {
     /// @notice              Sets the contract address for staking
     /// @param _distributor  Distributor Address
     function setDistributor(address _distributor) external onlyOwner {
+        require(_isContract(_distributor), "Address is not a contract");
         distributor = IDistributor(_distributor);
         emit DistributorSet(_distributor);
+    }
+
+    function _isContract(address _addr) internal view returns (bool) {
+        uint32 size;
+        assembly {
+            size := extcodesize(_addr)
+        }
+        return (size > 0);
     }
 }
