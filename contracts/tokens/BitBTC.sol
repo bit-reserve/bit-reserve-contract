@@ -222,11 +222,7 @@ contract rBTC is OFT{
         emit RedemtionsActivated();
     }
 
-    /// @notice  Set redemtions unactive
-    function setRedemtionUnactive() external onlyOwner {
-        redemtionsActive = false;
-        emit RedemtionUnactivated();
-    }
+
 
     /// @notice  Add approved manager
     function addApprovedManager(address _manager) external onlyOwner {
